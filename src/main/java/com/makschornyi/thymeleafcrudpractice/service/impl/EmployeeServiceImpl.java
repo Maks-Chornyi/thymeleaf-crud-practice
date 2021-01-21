@@ -4,6 +4,9 @@ import com.makschornyi.thymeleafcrudpractice.model.Employee;
 import com.makschornyi.thymeleafcrudpractice.repository.EmployeeRepository;
 import com.makschornyi.thymeleafcrudpractice.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,5 +37,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Page<Employee> findPaginated(int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+        return repository.findAll(pageable);
     }
 }

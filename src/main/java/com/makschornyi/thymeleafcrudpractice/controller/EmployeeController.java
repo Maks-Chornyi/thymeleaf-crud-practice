@@ -4,6 +4,7 @@ import com.makschornyi.thymeleafcrudpractice.model.Employee;
 import com.makschornyi.thymeleafcrudpractice.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,7 @@ public class EmployeeController {
 
     @GetMapping
     public String viewEmployeePage(Model model) {
-        model.addAttribute("employees", employeeService.findAll());
-        return "employee";
+        return getSpecialPage(1, model);
     }
 
     @GetMapping("/all")
@@ -53,5 +53,19 @@ public class EmployeeController {
     public String showFormForUpdate(@PathVariable Long id) {
         employeeService.deleteById(id);
         return "redirect:/employee";
+    }
+
+    @GetMapping("page/{pageNum}")
+    public String getSpecialPage(@PathVariable int pageNum, Model model) {
+        int pageSize = 5;
+        final Page<Employee> employeePage = employeeService.findPaginated(pageNum, pageSize);
+        List<Employee> employees = employeePage.getContent();
+
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", employeePage.getTotalPages());
+        model.addAttribute("totalItems", employeePage.getTotalElements());
+        model.addAttribute("employees", employees);
+
+        return "employee";
     }
 }

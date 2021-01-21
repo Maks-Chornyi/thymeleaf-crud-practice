@@ -1,6 +1,7 @@
 package com.makschornyi.thymeleafcrudpractice.service;
 
 import com.makschornyi.thymeleafcrudpractice.model.Employee;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface EmployeeService {
     Employee findById(Long id);
 
     void deleteById(Long id);
+
+    Page<Employee> findPaginated(int pageNum, int pageSize);
 }
