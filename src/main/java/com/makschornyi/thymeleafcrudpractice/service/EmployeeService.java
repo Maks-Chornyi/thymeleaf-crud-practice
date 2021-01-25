@@ -2,6 +2,7 @@ package com.makschornyi.thymeleafcrudpractice.service;
 
 import com.makschornyi.thymeleafcrudpractice.model.Employee;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -15,5 +16,5 @@ public interface EmployeeService {
 
     void deleteById(Long id);
 
-    Page<Employee> findPaginated(int pageNum, int pageSize);
+    Page<Employee> findPaginated(int pageNum, int pageSize, String sortField, String direction);
 }

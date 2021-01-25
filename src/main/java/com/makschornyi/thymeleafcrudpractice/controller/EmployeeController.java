@@ -19,7 +19,7 @@ public class EmployeeController {
 
     @GetMapping
     public String viewEmployeePage(Model model) {
-        return getSpecialPage(1, model);
+        return getSpecialPage(1, "firstname", "asc", model);
     }
 
     @GetMapping("/all")
@@ -55,15 +55,21 @@ public class EmployeeController {
     }
 
     @GetMapping("page/{pageNum}")
-    public String getSpecialPage(@PathVariable int pageNum, Model model) {
+    public String getSpecialPage(@PathVariable int pageNum,
+                                 @RequestParam("sortField") String sortField,
+                                 @RequestParam("sortDir") String sortDir,
+                                 Model model) {
         int pageSize = 5;
-        final Page<Employee> employeePage = employeeService.findPaginated(pageNum, pageSize);
+        final Page<Employee> employeePage = employeeService.findPaginated(pageNum, pageSize, sortField, sortDir);
         List<Employee> employees = employeePage.getContent();
 
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("totalPages", employeePage.getTotalPages());
         model.addAttribute("totalItems", employeePage.getTotalElements());
         model.addAttribute("employees", employees);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
         return "employee";
     }
