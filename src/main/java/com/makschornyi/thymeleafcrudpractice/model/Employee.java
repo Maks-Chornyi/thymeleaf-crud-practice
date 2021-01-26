@@ -3,6 +3,7 @@ package com.makschornyi.thymeleafcrudpractice.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,4 +16,6 @@ public class Employee {
     private String firstname;
     private String lastname;
     private String email;
+    private String password;
+//    private List<Role> roles;
 }
